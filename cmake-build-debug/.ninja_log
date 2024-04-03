@@ -1,16 +1,11 @@
 # ninja log v5
-2	70	7289640025439057	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
-70	143	7289640026126598	untitled4.exe	71ccb31677928467
-9	314	7330857848255283	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
-5	119	7330858012282325	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
-3	108	7330859265992695	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
-10	163	7330859266517030	CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj	95c3ecf187b20d57
-163	641	7330859271278015	untitled4.exe	fdab5ef690381c84
-4	110	7330867917113630	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
-14	144	7330867917465995	CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj	95c3ecf187b20d57
-145	317	7330867919136686	untitled4.exe	fdab5ef690381c84
-3	152	7330868234919564	CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj	95c3ecf187b20d57
-153	328	7330868236614038	untitled4.exe	fdab5ef690381c84
-5	347	7331888700141916	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
-18	388	7331888700580806	CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj	95c3ecf187b20d57
-388	705	7331888703680608	untitled4.exe	fdab5ef690381c84
+3	75	7331944474925450	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
+149	449	7331944478631649	untitled4.exe	cced57e3c9680175
+7	149	7331944475681382	CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj	95c3ecf187b20d57
+14	108	7331944475271028	CMakeFiles/untitled4.dir/libs/data_structures/vector/main.c.obj	c104279c840efbed
+10	245	7336967527851342	CMakeFiles/untitled4.dir/libs/data_structures/matrix/matrix.c.obj	ad98878910e3ce9d
+3	246	7336967527851342	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc
+2	80	7336968173802351	CMakeFiles/untitled4.dir/libs/data_structures/matrix/matrix.c.obj	ad98878910e3ce9d
+1	65	7336968474088667	CMakeFiles/untitled4.dir/libs/data_structures/vector/main.c.obj	c104279c840efbed
+65	165	7336968475038694	untitled4.exe	d8e3dc43e51e63c2
+4	451	7338043022474054	CMakeFiles/untitled4.dir/main.c.obj	9bfdf7a0212f90fc

@@ -1,100 +1,82 @@
-
-#include <stdint.h>
-#include "libs/data_structures/vector/vector.h"
 #include <assert.h>
+#include <stdio.h>
+#include "libs/data_structures/matrix/matrix.h"
 
-void test_pushBack_emptyVector() {
-    vector v = createVector(0);
-    pushBack(&v, 123);
-    assert(v.size == 1);
-    assert(v.data[0] == 123);
-    deleteVector(&v);
-}
+void test_functions() {
+    // Создаем матрицу для тестирования
+    int nRows = 3;
+    int nCols = 3;
+    matrix m = getMemMatrix(nRows, nCols);
 
-void test_pushBack_fullVector() {
-    vector v = createVector(1);
-    pushBack(&v, 123);
-    pushBack(&v, 456);
-    assert(v.size == 2);
-    assert(v.data[0] == 123);
-    assert(v.data[1] == 456);
-    deleteVector(&v);
-}
+    // Заполняем матрицу значениями
+    int counter = 1;
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            m.values[i][j] = counter++;
+        }
+    }
 
-void test_popBack_notEmptyVector() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(v.size == 1);
-    popBack(&v);
-    assert(v.size == 0);
-    assert(v.capacity == 1);
-}
+    // Тестирование функции isSquareMatrix
+    assert(isSquareMatrix(&m) == true);
 
-void test_atVector() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(*(atVector(&v, 0)) == 10);
-    assert(atVector(&v, 1) == NULL);
-}
+    // Тестирование функции areTwoMatricesEqual
+    matrix m1 = getMemMatrix(nRows, nCols);
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            m1.values[i][j] = m.values[i][j];
+        }
+    }
+    assert(areTwoMatricesEqual(&m, &m1) == true);
 
-void test_back() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(*(back(&v)) == 10);
-    pushBack(&v, 20);
-    assert(*(back(&v)) == 20);
-}
+    // Тестирование функции isEMatrix
+    matrix m2 = getMemMatrix(nRows, nCols);
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            m2.values[i][j] = (i == j) ? 1 : 0;
+        }
+    }
+    assert(isEMatrix(&m2) == true);
 
-void test_front() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(*(front(&v)) == 10);
-    pushBack(&v, 20);
-    assert(*(front(&v)) == 10);
-}
+    // Тестирование функции isSymmetricMatrix
+    matrix m3 = getMemMatrix(nRows, nCols);
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            m3.values[i][j] = 1;
+        }
+    }
+    assert(isSymmetricMatrix(&m3) == true);
 
-void test_atVector_notEmptyVector() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(*(atVector(&v, 0)) == 10);
-}
+    // Тестирование функции transposeMatrix
+    transposeMatrix(&m);
+    assert(m.values[0][0] == 1);
+    assert(m.values[0][1] == 4);
+    assert(m.values[0][2] == 7);
+    assert(m.values[1][0] == 2);
+    assert(m.values[1][1] == 5);
+    assert(m.values[1][2] == 8);
+    assert(m.values[2][0] == 3);
+    assert(m.values[2][1] == 6);
+    assert(m.values[2][2] == 9);
 
-void test_atVector_requestToLastElement() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    pushBack(&v, 20);
-    assert(*(atVector(&v, v.size - 1)) == 20);
-}
+    // Тестирование функции getMaxValuePos
+    position maxPos = getMaxValuePos(m);
+    assert(maxPos.rowIndex == 2);
+    assert(maxPos.colIndex == 2);
 
-void test_back_oneElementInVector() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(*(back(&v)) == 10);
-}
+    // Тестирование функции getMinValuePos
+    position minPos = getMinValuePos(m);
+    assert(minPos.rowIndex == 0);
+    assert(minPos.colIndex == 0);
 
-void test_front_oneElementInVector() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(*(front(&v)) == 10);
-}
-
-
-void test(){
-    test_pushBack_emptyVector();
-    test_pushBack_fullVector();
-    test_popBack_notEmptyVector();
-    test_atVector();
-    test_back();
-    test_front();
-    test_atVector_notEmptyVector();
-    test_atVector_requestToLastElement();
-    test_back_oneElementInVector();
-    test_front_oneElementInVector();
+    // Освобождение памяти
+    freeMemMatrix(&m);
+    freeMemMatrix(&m1);
+    freeMemMatrix(&m2);
+    freeMemMatrix(&m3);
 }
 
 int main() {
-    vector v = createVector(SIZE_MAX);
-    test();
-
+    test_functions();
+    printf("Все тесты прошли успешно.\n");
     return 0;
 }

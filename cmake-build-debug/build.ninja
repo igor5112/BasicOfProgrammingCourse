@@ -61,6 +61,18 @@ build CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj: C_COMPI
   OBJECT_DIR = CMakeFiles\untitled4.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled4.dir\libs\data_structures\vector
 
+build CMakeFiles/untitled4.dir/libs/data_structures/vector/main.c.obj: C_COMPILER__untitled4_unscanned_Debug C$:/untitled4/libs/data_structures/vector/main.c || cmake_object_order_depends_target_untitled4
+  DEP_FILE = CMakeFiles\untitled4.dir\libs\data_structures\vector\main.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\untitled4.dir
+  OBJECT_FILE_DIR = CMakeFiles\untitled4.dir\libs\data_structures\vector
+
+build CMakeFiles/untitled4.dir/libs/data_structures/matrix/matrix.c.obj: C_COMPILER__untitled4_unscanned_Debug C$:/untitled4/libs/data_structures/matrix/matrix.c || cmake_object_order_depends_target_untitled4
+  DEP_FILE = CMakeFiles\untitled4.dir\libs\data_structures\matrix\matrix.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\untitled4.dir
+  OBJECT_FILE_DIR = CMakeFiles\untitled4.dir\libs\data_structures\matrix
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target untitled4
@@ -69,7 +81,7 @@ build CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj: C_COMPI
 #############################################
 # Link the executable untitled4.exe
 
-build untitled4.exe: C_EXECUTABLE_LINKER__untitled4_Debug CMakeFiles/untitled4.dir/main.c.obj CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj
+build untitled4.exe: C_EXECUTABLE_LINKER__untitled4_Debug CMakeFiles/untitled4.dir/main.c.obj CMakeFiles/untitled4.dir/libs/data_structures/vector/vector.c.obj CMakeFiles/untitled4.dir/libs/data_structures/vector/main.c.obj CMakeFiles/untitled4.dir/libs/data_structures/matrix/matrix.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\untitled4.dir
