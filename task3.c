@@ -1,27 +1,47 @@
-#include "libs/data_structures/matrix/matrix.h"
+#include <stdio.h>
 
+#define ROWS 3
+#define COLS 6
 
 int getMin(int *a, int n) {
-    int min = a[0];
+    int min = *a;
     for (int i = 1; i < n; i++) {
-        if (a[i] < min) {
-            min = a[i];
+        if (*(a + i) < min) {
+            min = *(a + i);
         }
     }
     return min;
 }
 
-
-void sortColsByMinElement(matrix m) {
-    for (int i = 0; i < m.nCols; i++) {
-        int min_index = i;
-        for (int j = i+1; j < m.nCols; j++) {
-            if (getMin(m.values[j], m.nRows) < getMin(m.values[min_index], m.nRows)) {
-                min_index = j;
+void sortColsByMinElement(int (*matrix)[COLS]) {
+    for (int i = 0; i < COLS - 1; i++) {
+        for (int j = 0; j < COLS - i - 1; j++) {
+            if (getMin(matrix[j], ROWS) > getMin(matrix[j + 1], ROWS)) {
+                for (int k = 0; k < ROWS; k++) {
+                    int temp = *(*(matrix + k) + j);
+                    *(*(matrix + k) + j) = *(*(matrix + k) + j + 1);
+                    *(*(matrix + k) + j + 1) = temp;
+                }
             }
         }
-        if (min_index != i) {
-            swapColumns(m, i, min_index);
-        }
     }
-};
+}
+
+int main() {
+    int matrix[ROWS][COLS] = {
+            {3, 5, 2, 4, 3, 3},
+            {2, 5, 1, 8, 2, 7},
+            {6, 1, 4, 4, 8, 3}
+    };
+
+    sortColsByMinElement(matrix);
+
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%d ", *(*(matrix + i) + j));
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
