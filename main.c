@@ -645,3 +645,24 @@ void appendWordsFromLongerToString(char *s1, char *s2) {
     }
     *destStr = '\0';
 }
+
+int areAllCharsPresent(char *str, char *word)
+{
+    int count[NO_OF_CHARS] = {0};
+    int i;
+
+    for (i = 0; *(word+i); i++)
+        count[*(word+i)]++;
+
+    for (i = 0; *(str+i); i++)
+    {
+        if (count[*(str+i)] > 0)
+            count[*(str+i)]--;
+    }
+
+    for (i = 0; i < NO_OF_CHARS; i++)
+        if (count[i])
+            return 0;
+
+    return 1;
+}
