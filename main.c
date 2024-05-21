@@ -554,4 +554,19 @@ void getStringOfWordsDifferentFromLast(char *str, char *result) {
     } else {
         *result = '\0';
     }
-} 
+}
+
+WordDescriptor findPrecedingWord(const char *s1, const char *s2) {
+    const char *current = s1;
+    WordDescriptor currentWord, precedingWord = {NULL, NULL}, firstCommonWord = {NULL, NULL};
+
+    while (getWord(&current, &currentWord)) {
+        if (isWordInString(s2, currentWord)) {
+            firstCommonWord = currentWord;
+            break;
+        }
+        precedingWord = currentWord;
+    }
+
+    return precedingWord;
+}
