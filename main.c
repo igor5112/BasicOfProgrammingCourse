@@ -599,3 +599,49 @@ void removePalindromes(char *str) {
         *result = '\0';
     }
 }
+
+int countWords(const char *str) {
+    int count = 0;
+    while (*str) {
+
+        while (*str && isspace((unsigned char)*str)) {
+            str++;
+        }
+
+        if (*str) {
+            count++;
+
+            while (*str && !isspace((unsigned char)*str)) {
+                str++;
+            }
+        }
+    }
+    return count;
+}
+
+void appendWordsFromLongerToString(char *s1, char *s2) {
+    int n1 = countWords(s1);
+    int n2 = countWords(s2);
+
+
+    char *sourceStr = (n1 > n2) ? s1 : s2;
+    char *destStr = (n1 > n2) ? s2 : s1;
+    int wordsToCopy = (n1 > n2) ? n1 - n2 : n2 - n1;
+
+
+    const char *wordStart = sourceStr;
+    for (int i = 0; i < wordsToCopy; i++) {
+        while (*wordStart) wordStart++;
+        while (wordStart > sourceStr && !isspace((unsigned char)*(wordStart - 1))) wordStart--;
+    }
+
+
+    while (*destStr) destStr++;
+    if (destStr != s1 && destStr != s2) {
+        *destStr++ = ' ';
+    }
+    while (*wordStart) {
+        *destStr++ = *wordStart++;
+    }
+    *destStr = '\0';
+}
