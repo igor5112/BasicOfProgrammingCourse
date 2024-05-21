@@ -43,3 +43,61 @@ void removeExtraSpaces(char *s) {
     }
     *d = '\0';
 }
+
+int getWord(char *beginSearch, WordDescriptor *word) {
+    word->begin = findNonSpace(beginSearch);
+    if (*word->begin == '\0')
+        return 0;
+    word->end = findSpace(word->begin);
+    return 1;
+}
+
+
+
+void digitToStart(WordDescriptor word) {
+    char *endStringBuffer = copy(word.begin, word.end,
+                                 _stringBuffer);
+    char *recPosition = copyIfReverse(endStringBuffer - 1,
+                                      _stringBuffer - 1,
+                                      word.begin, isdigit);
+    copyIf(_stringBuffer, endStringBuffer, recPosition, isalpha);
+}
+
+
+void stringModernization(char *s) {
+    char *begin = s;
+    char *end;
+    char *wordBegin;
+    char *digitEnd;
+
+    while (*begin) {
+        begin = findNonSpace(begin);
+        if (*begin == '\0') {
+            break;
+        }
+        wordBegin = begin;
+        end = findWordEnd(begin);
+        digitEnd = end;
+
+
+        while (begin < end) {
+            if (isdigit(*begin)) {
+                char temp = *begin;
+                while (begin > wordBegin) {
+                    *begin = *(begin - 1);
+                    begin--;
+                }
+                *wordBegin = temp;
+                begin = wordBegin + 1;
+                digitEnd++;
+            } else {
+                begin++;
+            }
+        }
+
+
+        reverseDigits(wordBegin, digitEnd - 1);
+
+        begin = end;
+    }
+}
