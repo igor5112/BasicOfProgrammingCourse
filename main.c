@@ -159,3 +159,45 @@ void replace(char *source, char *w1, char *w2) {
     }
     *recPtr = '\0';
 }
+
+int areWordsEqual(WordDescriptor w1, WordDescriptor w2) {
+    while (w1.begin < w1.end && w2.begin < w2.end) {
+        if (*w1.begin != *w2.begin) {
+            return *w1.begin < *w2.begin ? -1 : 1;
+        }
+        w1.begin++;
+        w2.begin++;
+    }
+    if (w1.begin == w1.end && w2.begin == w2.end) {
+        return 0; // Слова равны
+    }
+    return w1.begin == w1.end ? -1 : 1;
+}
+
+bool isLexicographicallyOrdered(const char *sentence) {
+    const char *ptr = sentence;
+    WordDescriptor prevWord = {NULL, NULL}, currentWord;
+
+    while (*ptr && isspace(*ptr)) ptr++;
+    if (!*ptr) return true;
+
+    prevWord.begin = ptr;
+    while (*ptr && !isspace(*ptr)) ptr++;
+    prevWord.end = ptr;
+
+
+    while (*ptr) {
+        while (*ptr && isspace(*ptr)) ptr++;
+        if (!*ptr) break;
+
+        currentWord.begin = ptr;
+        while (*ptr && !isspace(*ptr)) ptr++;
+        currentWord.end = ptr;
+
+        if (areWordsEqual(prevWord, currentWord) > 0) {
+            return false;
+        }
+        prevWord = currentWord;
+    }
+    return true;
+}
