@@ -24,4 +24,22 @@ void removeNonLetters(char *s) {
     char *endSource = getEndOfString(s);
     char *destination = copyIf(s, endSource, s, isgraph);
     *destination = '\0';
-}                                 
+}
+
+void removeExtraSpaces(char *s) {
+    char *d = s;
+    int inWord = 0;
+
+    while (*s) {
+        if (*s != ' ') {
+            *d++ = *s;
+            inWord = 1;
+        } else if (inWord) {
+            *d++ = *s;
+            inWord = 0;
+            while (*(s + 1) == ' ') s++;
+        }
+        s++;
+    }
+    *d = '\0';
+}
