@@ -279,3 +279,33 @@ int countPalindromes(const char *s) {
 
     return count;
 }
+
+void mergeStrings(const char *s1, const char *s2, char *result) {
+    WordDescriptor word1, word2;
+    bool isW1Found, isW2Found;
+    char *beginSearch1 = (char *)s1, *beginSearch2 = (char *)s2;
+
+    while ((isW1Found = getWord(beginSearch1, &word1)),
+            (isW2Found = getWord(beginSearch2, &word2)),
+            isW1Found || isW2Found) {
+        if (isW1Found) {
+            while (word1.begin != word1.end) {
+                *result++ = *word1.begin++;
+            }
+            beginSearch1 = word1.end;
+            if (isW2Found) {
+                *result++ = ' ';
+            }
+        }
+        if (isW2Found) {
+            while (word2.begin != word2.end) {
+                *result++ = *word2.begin++;
+            }
+            beginSearch2 = word2.end;
+            if (isW1Found && *(word1.end) != '\0') {
+                *result++ = ' ';
+            }
+        }
+    }
+    *result = '\0';
+}
