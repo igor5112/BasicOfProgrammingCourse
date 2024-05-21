@@ -134,7 +134,7 @@ void takeEveryNumberToCountOfSpaces(char *s) {
 }
 
 void replace(char *source, char *w1, char *w2) {
-    size_t w1Size = strlen1(w1); // Предполагается, что функция strlen1 определена и работает как strlen
+    size_t w1Size = strlen1(w1);
     size_t w2Size = strlen1(w2);
     WordDescriptor word1 = {w1, w1 + w1Size};
     WordDescriptor word2 = {w2, w2 + w2Size};
@@ -169,7 +169,7 @@ int areWordsEqual(WordDescriptor w1, WordDescriptor w2) {
         w2.begin++;
     }
     if (w1.begin == w1.end && w2.begin == w2.end) {
-        return 0; // Слова равны
+        return 0;
     }
     return w1.begin == w1.end ? -1 : 1;
 }
@@ -210,7 +210,7 @@ void getBagOfWords(char *s) {
     while (*beginWord != '\0') {
         getWord(&beginWord, &endWord);
         if (beginWord == endWord) {
-            break; // Нет больше слов
+            break;
         }
         if (_bag.size < MAX_N_WORDS_IN_STRING) {
             _bag.words[_bag.size].begin = beginWord;
@@ -784,15 +784,15 @@ void testPrintWordsInReverseOrder() {
 void testCountPalindromes() {
     char result[50];
 
-    // Тест 1: Проверка строки без палиндромов
+
     sprintf(result, "%d", countPalindromes("cat, dog, fish"));
     assertString("0", result, __FILE__, __func__, __LINE__);
 
-    // Тест 2: Проверка строки с одним палиндромом
+
     sprintf(result, "%d", countPalindromes("madam, dog, fish"));
     assertString("1", result, __FILE__, __func__, __LINE__);
 
-    // Тест 3: Проверка строки с несколькими палиндромами
+
     sprintf(result, "%d", countPalindromes("level, deed, noon, refer, fish"));
     assertString("4", result, __FILE__, __func__, __LINE__);
 }
@@ -863,7 +863,7 @@ void testPrintWordBeforeFirstWordWithA() {
     printWordBeforeFirstWordWithA(testStr1);
     assertString("is", buffer, __FILE__, __func__, __LINE__);
 
-    // Очищаем буфер.
+
     clearBuffer(buffer, sizeof(buffer));
 
 
