@@ -401,3 +401,37 @@ void printWordBeforeFirstWordWithA(char *s) {
 
     printf("No word with 'a' found.\n");
 }
+
+void wordDescriptorToString(WordDescriptor word, char *destination) {
+    while (word.begin != word.end) {
+        *destination++ = *word.begin++;
+    }
+    *destination = '\0';
+}
+
+
+bool isWordInString(const char *str, WordDescriptor word) {
+    const char *current = str;
+    while (*current) {
+        const char *begin = current;
+        // Находим конец слова
+        while (*current && !isspace((unsigned char)*current)) {
+            current++;
+        }
+
+        const char *wordIter = word.begin;
+        const char *strIter = begin;
+        while (wordIter != word.end && strIter != current && *wordIter == *strIter) {
+            wordIter++;
+            strIter++;
+        }
+        if (wordIter == word.end && (strIter == current || isspace((unsigned char)*strIter))) {
+            return true;
+        }
+
+        while (*current && isspace((unsigned char)*current)) {
+            current++;
+        }
+    }
+    return false;
+}
