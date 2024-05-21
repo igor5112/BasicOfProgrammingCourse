@@ -2,7 +2,9 @@
 #include <ctype.h>
 #include "libs/data_structures/string/string_.h"
 #include <stdbool.h>
+
 #define NO_OF_CHARS 256
+
 #include <assert.h>
 
 void assertString(const char *expected, char *got,
@@ -17,7 +19,6 @@ void assertString(const char *expected, char *got,
         fprintf(stderr, "%s - OK\n", funcName);
     }
 }
-
 
 
 void removeNonLetters(char *s) {
@@ -51,7 +52,6 @@ int getWord(char *beginSearch, WordDescriptor *word) {
     word->end = findSpace(word->begin);
     return 1;
 }
-
 
 
 void digitToStart(WordDescriptor word) {
@@ -230,7 +230,7 @@ void printWordsInReverseOrder(char *s) {
         }
         putchar('\n');
     }
-} //                 //ЗАДАЧА 7
+}
 
 bool isPalindrome(const char *start, const char *end) {
     while (start < end) {
@@ -283,7 +283,7 @@ int countPalindromes(const char *s) {
 void mergeStrings(const char *s1, const char *s2, char *result) {
     WordDescriptor word1, word2;
     bool isW1Found, isW2Found;
-    char *beginSearch1 = (char *)s1, *beginSearch2 = (char *)s2;
+    char *beginSearch1 = (char *) s1, *beginSearch2 = (char *) s2;
 
     while ((isW1Found = getWord(beginSearch1, &word1)),
             (isW2Found = getWord(beginSearch2, &word2)),
@@ -343,7 +343,7 @@ void reverseWordsInString(char *str) {
     } else {
         *dest = '\0';
     }
-}   //                                  ЗАДАЧА 10
+}
 
 bool hasLetterA(const char *begin, const char *end) {
     while (begin != end) {
@@ -355,7 +355,6 @@ bool hasLetterA(const char *begin, const char *end) {
     return false;
 }
 
-// Функция для вывода слова перед первым словом с буквой 'a'
 void printWordBeforeFirstWordWithA(char *s) {
     const char *begin = s;
     const char *end;
@@ -363,7 +362,7 @@ void printWordBeforeFirstWordWithA(char *s) {
     size_t wordBeforeLength = 0;
 
     while (*begin) {
-        // Пропускаем пробелы
+
         while (*begin == ' ') {
             begin++;
         }
@@ -372,14 +371,14 @@ void printWordBeforeFirstWordWithA(char *s) {
         }
         end = begin;
 
-        // Находим конец слова
+
         while (*end != ' ' && *end != '\0') {
             end++;
         }
 
-        // Проверяем, содержит ли слово букву 'a'
+
         if (hasLetterA(begin, end)) {
-            // Если это первое слово с 'a', выводим предыдущее слово, если оно есть
+
             if (wordBefore) {
                 for (const char *c = wordBefore; c != wordBefore + wordBeforeLength; c++) {
                     putchar(*c);
@@ -414,8 +413,8 @@ bool isWordInString(const char *str, WordDescriptor word) {
     const char *current = str;
     while (*current) {
         const char *begin = current;
-        // Находим конец слова
-        while (*current && !isspace((unsigned char)*current)) {
+
+        while (*current && !isspace((unsigned char) *current)) {
             current++;
         }
 
@@ -425,11 +424,11 @@ bool isWordInString(const char *str, WordDescriptor word) {
             wordIter++;
             strIter++;
         }
-        if (wordIter == word.end && (strIter == current || isspace((unsigned char)*strIter))) {
+        if (wordIter == word.end && (strIter == current || isspace((unsigned char) *strIter))) {
             return true;
         }
 
-        while (*current && isspace((unsigned char)*current)) {
+        while (*current && isspace((unsigned char) *current)) {
             current++;
         }
     }
@@ -441,7 +440,7 @@ WordDescriptor lastWordInFirstStringInSecondString(const char *s1, const char *s
     const char *current = s1;
     while (*current) {
 
-        while (*current && isspace((unsigned char)*current)) {
+        while (*current && isspace((unsigned char) *current)) {
             current++;
         }
         if (*current == '\0') {
@@ -449,7 +448,7 @@ WordDescriptor lastWordInFirstStringInSecondString(const char *s1, const char *s
         }
         WordDescriptor word = {current, NULL};
 
-        while (*current && !isspace((unsigned char)*current)) {
+        while (*current && !isspace((unsigned char) *current)) {
             current++;
         }
         word.end = current;
@@ -458,7 +457,7 @@ WordDescriptor lastWordInFirstStringInSecondString(const char *s1, const char *s
             lastWord = word;
         }
 
-        while (*current && isspace((unsigned char)*current)) {
+        while (*current && isspace((unsigned char) *current)) {
             current++;
         }
     }
@@ -473,7 +472,7 @@ bool hasSameWords(char *str) {
     while (getWord(&current, &currentWord)) {
         compare = current;
 
-        // Сравниваем текущее слово со всеми последующими
+
         while (getWord(&compare, &compareWord)) {
             if (areWordsEqual(currentWord, compareWord) == 0) {
                 return true;
@@ -578,12 +577,12 @@ void removePalindromes(char *str) {
 
     while (*begin) {
 
-        while (*begin && isspace((unsigned char)*begin)) {
+        while (*begin && isspace((unsigned char) *begin)) {
             begin++;
         }
         end = begin;
 
-        while (*end && !isspace((unsigned char)*end)) {
+        while (*end && !isspace((unsigned char) *end)) {
             end++;
         }
         if (begin < end && !isPalindrome(begin, end)) {
@@ -604,14 +603,14 @@ int countWords(const char *str) {
     int count = 0;
     while (*str) {
 
-        while (*str && isspace((unsigned char)*str)) {
+        while (*str && isspace((unsigned char) *str)) {
             str++;
         }
 
         if (*str) {
             count++;
 
-            while (*str && !isspace((unsigned char)*str)) {
+            while (*str && !isspace((unsigned char) *str)) {
                 str++;
             }
         }
@@ -632,7 +631,7 @@ void appendWordsFromLongerToString(char *s1, char *s2) {
     const char *wordStart = sourceStr;
     for (int i = 0; i < wordsToCopy; i++) {
         while (*wordStart) wordStart++;
-        while (wordStart > sourceStr && !isspace((unsigned char)*(wordStart - 1))) wordStart--;
+        while (wordStart > sourceStr && !isspace((unsigned char) *(wordStart - 1))) wordStart--;
     }
 
 
@@ -646,18 +645,16 @@ void appendWordsFromLongerToString(char *s1, char *s2) {
     *destStr = '\0';
 }
 
-int areAllCharsPresent(char *str, char *word)
-{
+int areAllCharsPresent(char *str, char *word) {
     int count[NO_OF_CHARS] = {0};
     int i;
 
-    for (i = 0; *(word+i); i++)
-        count[*(word+i)]++;
+    for (i = 0; *(word + i); i++)
+        count[*(word + i)]++;
 
-    for (i = 0; *(str+i); i++)
-    {
-        if (count[*(str+i)] > 0)
-            count[*(str+i)]--;
+    for (i = 0; *(str + i); i++) {
+        if (count[*(str + i)] > 0)
+            count[*(str + i)]--;
     }
 
     for (i = 0; i < NO_OF_CHARS; i++)
@@ -665,4 +662,369 @@ int areAllCharsPresent(char *str, char *word)
             return 0;
 
     return 1;
+}
+
+void testRemoveNonLetters() {
+    char test1[] = "Hello, World!";
+    removeNonLetters(test1);
+    assertString("Hello,World!", test1, __FILE__, "testRemoveNonLetters", __LINE__);
+
+    char test2[] = "1234 5678";
+    removeNonLetters(test2);
+    assertString("12345678", test2, __FILE__, "testRemoveNonLetters", __LINE__);
+
+    char test3[] = "1@#$%^&*( )";
+    removeNonLetters(test3);
+    assertString("1@#$%^&*()", test3, __FILE__, "testRemoveNonLetters", __LINE__);
+}
+
+void testRemoveExtraSpaces() {
+    char test1[] = "This   is  a test.";
+    removeExtraSpaces(test1);
+    assertString("This is a test.", test1, __FILE__, "testRemoveExtraSpaces", __LINE__);
+
+    char test2[] = "Leading  and trailing spaces";
+    removeExtraSpaces(test2);
+    assertString("Leading and trailing spaces", test2, __FILE__, "testRemoveExtraSpaces", __LINE__);
+
+    char test3[] = "Multiple     spaces     between     words.";
+    removeExtraSpaces(test3);
+    assertString("Multiple spaces between words.", test3, __FILE__, "testRemoveExtraSpaces", __LINE__);
+}
+
+void testStringModernization() {
+    char test1[] = "a123 и456";
+    stringModernization(test1);
+    assertString("321abc 654def", test1, __FILE__, "testStringModernization", __LINE__);
+
+    char test2[] = "hello2world";
+    stringModernization(test2);
+    assertString("2helloworld", test2, __FILE__, "testStringModernization", __LINE__);
+
+    char test3[] = "abc03 def90";
+    stringModernization(test3);
+    assertString("30abc 654def", test3, __FILE__, "testStringModernization", __LINE__);
+}
+
+void testTakeEveryNumberToCountOfSpaces() {
+    char test1[MAX_STRING_SIZE + 1] = "a1b2c3";
+    takeEveryNumberToCountOfSpaces(test1);
+    assertString("a b  c   ", test1, __FILE__, "testTakeEveryNumberToCountOfSpaces", __LINE__);
+
+    char test2[MAX_STRING_SIZE + 1] = "4d5e6f";
+    takeEveryNumberToCountOfSpaces(test2);
+    assertString("    d     e      f", test2, __FILE__, "testTakeEveryNumberToCountOfSpaces", __LINE__);
+
+    char test3[MAX_STRING_SIZE + 1] = "123";
+    takeEveryNumberToCountOfSpaces(test3);
+    assertString("      ", test3, __FILE__, "testTakeEveryNumberToCountOfSpaces", __LINE__);
+}
+
+void testReplace() {
+    char source1[1024] = "the quick brown fox jumps over the lazy dog";
+    replace(source1, "the", "a");
+    assertString("a quick brown fox jumps over a lazy dog", source1, __FILE__, "testReplace", __LINE__);
+
+    char source2[1024] = "hello world, hello universe";
+    replace(source2, "hello", "hi");
+    assertString("hi world, hi universe", source2, __FILE__, "testReplace", __LINE__);
+
+    char source3[1024] = "foo bar foo";
+    replace(source3, "foo", "bar");
+    assertString("bar bar bar", source3, __FILE__, "testReplace", __LINE__);
+}
+
+void assertLexicographicallyOrdered(const char *sentence, bool expected, char const *fileName, char const *funcName,
+                                    int line) {
+    bool result = isLexicographicallyOrdered(sentence);
+    if (result != expected) {
+        fprintf(stderr, "File %s\n", fileName);
+        fprintf(stderr, "%s - failed on line %d\n", funcName, line);
+        fprintf(stderr, "Sentence: \"%s\"\n", sentence);
+        fprintf(stderr, "Expected to be %s\n\n", expected ? "ordered" : "not ordered");
+    } else {
+        fprintf(stderr, "%s - OK\n", funcName);
+    }
+}
+
+void testIsLexicographicallyOrdered() {
+    assertLexicographicallyOrdered("apple banana cherry", true, __FILE__, "testIsLexicographicallyOrdered", __LINE__);
+    assertLexicographicallyOrdered("banana apple cherry", false, __FILE__, "testIsLexicographicallyOrdered", __LINE__);
+    assertLexicographicallyOrdered("cherry cherry cherry", true, __FILE__, "testIsLexicographicallyOrdered", __LINE__);
+    assertLexicographicallyOrdered("", true, __FILE__, "testIsLexicographicallyOrdered", __LINE__);
+    assertLexicographicallyOrdered("a", true, __FILE__, "testIsLexicographicallyOrdered", __LINE__);
+}
+
+void assertOutput(const char *expected, char *input, char const *fileName, char const *funcName, int line) {
+    char buffer[1024] = {0};
+    setbuf(stdout, buffer);
+
+
+    printWordsInReverseOrder(input);
+
+    setbuf(stdout, NULL);
+
+
+    if (strcmp(expected, buffer) != 0) {
+        fprintf(stderr, "File %s\n", fileName);
+        fprintf(stderr, "%s - failed on line %d\n", funcName, line);
+        fprintf(stderr, "Expected:\n%s\n", expected);
+        fprintf(stderr, "Got:\n%s\n\n", buffer);
+    } else {
+        fprintf(stderr, "%s - OK\n", funcName);
+    }
+}
+
+void testPrintWordsInReverseOrder() {
+    const char *input = "This is a test";
+    const char *expected = "test\na\nis\nThis\n";
+    assertOutput(expected, input, __FILE__, "testPrintWordsInReverseOrder", __LINE__);
+}
+
+void testCountPalindromes() {
+    char result[50];
+
+    // Тест 1: Проверка строки без палиндромов
+    sprintf(result, "%d", countPalindromes("cat, dog, fish"));
+    assertString("0", result, __FILE__, __func__, __LINE__);
+
+    // Тест 2: Проверка строки с одним палиндромом
+    sprintf(result, "%d", countPalindromes("madam, dog, fish"));
+    assertString("1", result, __FILE__, __func__, __LINE__);
+
+    // Тест 3: Проверка строки с несколькими палиндромами
+    sprintf(result, "%d", countPalindromes("level, deed, noon, refer, fish"));
+    assertString("4", result, __FILE__, __func__, __LINE__);
+}
+
+
+void testMergeStrings() {
+    char result[1000];
+
+
+    mergeStrings("", "", result);
+
+    assertString("", result, __FILE__, __func__, __LINE__);
+
+    mergeStrings("Hello", "", result);
+    assertString("Hello", result, __FILE__, __func__, __LINE__);
+
+
+    mergeStrings("", "World", result);
+    assertString("World", result, __FILE__, __func__, __LINE__);
+
+
+    mergeStrings("Hello", "World", result);
+    assertString("Hello World", result, __FILE__, __func__, __LINE__);
+
+
+    mergeStrings("Hello there", "General Kenobi", result);
+    assertString("Hello General there Kenobi", result, __FILE__, __func__, __LINE__);
+}
+
+void testReverseWordsInString() {
+    char testString1[] = "Hello World";
+    reverseWordsInString(testString1);
+    assertString("World Hello", testString1, __FILE__, __func__, __LINE__);
+
+    char testString2[] = "one two three";
+    reverseWordsInString(testString2);
+    assertString("three two one", testString2, __FILE__, __func__, __LINE__);
+
+    char testString3[] = "  leading and trailing spaces  ";
+    reverseWordsInString(testString3);
+    assertString("spaces trailing and leading", testString3, __FILE__, __func__, __LINE__);
+
+    char testString4[] = "single";
+    reverseWordsInString(testString4);
+    assertString("single", testString4, __FILE__, __func__, __LINE__);
+
+    char testString5[] = "";
+    reverseWordsInString(testString5);
+    assertString("", testString5, __FILE__, __func__, __LINE__);
+}
+
+
+void clearBuffer(char *buffer, size_t size) {
+    for (size_t i = 0; i < size; i++) {
+        buffer[i] = 0;
+    }
+}
+
+void testPrintWordBeforeFirstWordWithA() {
+
+    char buffer[1024];
+    clearBuffer(buffer, sizeof(buffer));
+    freopen("/dev/null", "a", stdout);
+    setbuf(stdout, buffer);
+
+
+    char testStr1[] = "This is an apple";
+    printWordBeforeFirstWordWithA(testStr1);
+    assertString("is", buffer, __FILE__, __func__, __LINE__);
+
+    // Очищаем буфер.
+    clearBuffer(buffer, sizeof(buffer));
+
+
+    char testStr2[] = "an apple a day";
+    printWordBeforeFirstWordWithA(testStr2);
+    assertString("No word before the first word with 'a'.\n", buffer, __FILE__, __func__, __LINE__);
+
+
+    clearBuffer(buffer, sizeof(buffer));
+
+
+    char testStr3[] = "Hello world";
+    printWordBeforeFirstWordWithA(testStr3);
+    assertString("No word with 'a' found.\n", buffer, __FILE__, __func__, __LINE__);
+
+
+    freopen("/dev/tty", "a", stdout);
+}
+
+void testHasSameWords() {
+
+    char testStr1[] = "hello world hello";
+    bool result1 = hasSameWords(testStr1);
+    assertString("true", result1 ? "true" : "false", __FILE__, "testHasSameWords", __LINE__);
+
+    char testStr2[] = "power and power";
+    bool result2 = hasSameWords(testStr1);
+    assertString("true", result1 ? "true" : "false", __FILE__, "testHasSameWords", __LINE__);
+
+    char testStr3[] = "juice or or";
+    bool result3 = hasSameWords(testStr1);
+    assertString("true", result1 ? "true" : "false", __FILE__, "testHasSameWords", __LINE__);
+}
+
+void testHasAnagramPair() {
+
+    char testStr1[] = "listen silent";
+    bool result1 = hasAnagramPair(testStr1);
+    assertString("true", result1 ? "true" : "false", __FILE__, "testHasAnagramPair", __LINE__);
+
+    char testStr2[] = "ball labb";
+    bool result2 = hasAnagramPair(testStr1);
+    assertString("true", result1 ? "true" : "false", __FILE__, "testHasAnagramPair", __LINE__);
+
+    char testStr3[] = "gramm margm";
+    bool result3 = hasAnagramPair(testStr1);
+    assertString("true", result1 ? "true" : "false", __FILE__, "testHasAnagramPair", __LINE__);
+
+}
+
+void testGetStringOfWordsDifferentFromLast() {
+    char result[256];
+
+
+    char testStr1[] = "hello world sd";
+    getStringOfWordsDifferentFromLast(testStr1, result);
+    assertString("hello world", result, __FILE__, "testGetStringOfWordsDifferentFromLast", __LINE__);
+
+
+    char testStr2[] = "test test test";
+    getStringOfWordsDifferentFromLast(testStr2, result);
+    assertString("", result, __FILE__, "testGetStringOfWordsDifferentFromLast", __LINE__);
+
+
+    char testStr3[] = "single";
+    getStringOfWordsDifferentFromLast(testStr3, result);
+    assertString("", result, __FILE__, "testGetStringOfWordsDifferentFromLast", __LINE__);
+}
+
+void testFindPrecedingWord() {
+    char resultString[256];
+
+    const char *testStr1 = "hello world hello";
+    const char *testStr2 = "hello planet";
+    WordDescriptor result1 = findPrecedingWord(testStr1, testStr2);
+    wordDescriptorToString(result1, resultString);
+    assertString("world", resultString, __FILE__, "testFindPrecedingWord", __LINE__);
+
+
+    const char *testStr3 = "hello world from the sea";
+    const char *testStr4 = "hello there";
+    WordDescriptor result2 = findPrecedingWord(testStr3, testStr4);
+    wordDescriptorToString(result2, resultString);
+    assertString("", resultString, __FILE__, "testFindPrecedingWord", __LINE__);
+
+
+    const char *testStr5 = "unique words here";
+    const char *testStr6 = "no matching words";
+    WordDescriptor result3 = findPrecedingWord(testStr5, testStr6);
+    wordDescriptorToString(result3, resultString);
+    assertString("words", resultString, __FILE__, "testFindPrecedingWord", __LINE__);
+}
+
+void testRemovePalindromes() {
+    char testStr1[] = "level madam racecar hello";
+    removePalindromes(testStr1);
+    assertString("level madam racecar hello", testStr1, __FILE__, "testRemovePalindromes", __LINE__);
+
+    char testStr2[] = "noon civic deed rotor";
+    removePalindromes(testStr2);
+    assertString("noon civic deed rotor", testStr2, __FILE__, "testRemovePalindromes", __LINE__);
+
+    char testStr3[] = "hello world";
+    removePalindromes(testStr3);
+    assertString("hello world noon civic deed rotor", testStr3, __FILE__, "testRemovePalindromes", __LINE__);
+}
+
+void testAppendWordsFromLongerToString() {
+    char testStr1[256] = "This is a test";
+    char testStr2[256] = "This is a longer test string";
+    appendWordsFromLongerToString(testStr1, testStr2);
+    assertString("This is a test string", testStr1, __FILE__, "testAppendWordsFromLongerToString", __LINE__);
+
+    char testStr3[256] = "Another test string";
+    char testStr4[256] = "Short";
+    appendWordsFromLongerToString(testStr3, testStr4);
+    assertString("Short string", testStr4, __FILE__, "testAppendWordsFromLongerToString", __LINE__);
+
+    char testStr5[256] = "Any other string";
+    char testStr6[256] = "Short";
+    appendWordsFromLongerToString(testStr3, testStr4);
+    assertString("Short string string", testStr4, __FILE__, "testAppendWordsFromLongerToString", __LINE__);
+}
+
+void testAreAllCharsPresent() {
+    char str1[] = "a quick brown fox jumps over the lazy dog";
+    char word1[] = "quick";
+    assert(areAllCharsPresent(str1, word1) == 1);
+
+    char str2[] = "some random text";
+    char word2[] = "example";
+    assert(areAllCharsPresent(str2, word2) == 0);
+
+    char str3[] = "another example";
+    char word3[] = "";
+    assert(areAllCharsPresent(str3, word3) == 1);
+
+    char str4[] = "";
+    char word4[] = "word";
+    assert(areAllCharsPresent(str4, word4) == 0);
+
+}
+
+int main() {
+    testRemoveNonLetters();
+    testRemoveExtraSpaces();
+    testTakeEveryNumberToCountOfSpaces();
+    testReplace();
+    testIsLexicographicallyOrdered();
+    testCountPalindromes();
+    testMergeStrings();
+    testHasSameWords();
+    testHasAnagramPair();
+    testAppendWordsFromLongerToString();
+    testRemovePalindromes();
+    testAreAllCharsPresent();
+    testFindPrecedingWord();
+    testGetStringOfWordsDifferentFromLast();
+    testReverseWordsInString();
+    testPrintWordBeforeFirstWordWithA();
+    testPrintWordsInReverseOrder();
+    testStringModernization();
+    return 0;
 }
