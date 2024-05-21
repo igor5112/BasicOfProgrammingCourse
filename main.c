@@ -464,3 +464,21 @@ WordDescriptor lastWordInFirstStringInSecondString(const char *s1, const char *s
     }
     return lastWord;
 }
+
+bool hasSameWords(char *str) {
+    WordDescriptor currentWord, compareWord;
+    char *current = str;
+    char *compare;
+
+    while (getWord(&current, &currentWord)) {
+        compare = current;
+
+        // Сравниваем текущее слово со всеми последующими
+        while (getWord(&compare, &compareWord)) {
+            if (areWordsEqual(currentWord, compareWord) == 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
