@@ -435,3 +435,32 @@ bool isWordInString(const char *str, WordDescriptor word) {
     }
     return false;
 }
+
+WordDescriptor lastWordInFirstStringInSecondString(const char *s1, const char *s2) {
+    WordDescriptor lastWord = {NULL, NULL};
+    const char *current = s1;
+    while (*current) {
+
+        while (*current && isspace((unsigned char)*current)) {
+            current++;
+        }
+        if (*current == '\0') {
+            break;
+        }
+        WordDescriptor word = {current, NULL};
+
+        while (*current && !isspace((unsigned char)*current)) {
+            current++;
+        }
+        word.end = current;
+
+        if (isWordInString(s2, word)) {
+            lastWord = word;
+        }
+
+        while (*current && isspace((unsigned char)*current)) {
+            current++;
+        }
+    }
+    return lastWord;
+}
