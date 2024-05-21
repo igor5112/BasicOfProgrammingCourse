@@ -101,3 +101,34 @@ void stringModernization(char *s) {
         begin = end;
     }
 }
+
+void takeEveryNumberToCountOfSpaces(char *s) {
+    char buffer[MAX_STRING_SIZE + 1];
+    char *dst = buffer;
+    char *src = s;
+
+
+    while (*src && (dst - buffer) < MAX_STRING_SIZE) {
+        *dst++ = *src++;
+    }
+    *dst = '\0';
+
+
+    src = buffer;
+    dst = s;
+
+    while (*src) {
+        if (isdigit((unsigned char) *src)) {
+            int spaces = *src - '0';
+            while (spaces-- > 0 && (dst - s) < MAX_STRING_SIZE) {
+                *dst++ = ' ';
+            }
+        } else {
+            if ((dst - s) < MAX_STRING_SIZE) {
+                *dst++ = *src;
+            }
+        }
+        src++;
+    }
+    *dst;
+}
