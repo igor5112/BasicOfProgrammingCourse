@@ -201,3 +201,81 @@ bool isLexicographicallyOrdered(const char *sentence) {
     }
     return true;
 }
+
+void getBagOfWords(char *s) {
+    _bag.size = 0;
+    char *beginWord = s;
+    char *endWord;
+
+    while (*beginWord != '\0') {
+        getWord(&beginWord, &endWord);
+        if (beginWord == endWord) {
+            break; // Нет больше слов
+        }
+        if (_bag.size < MAX_N_WORDS_IN_STRING) {
+            _bag.words[_bag.size].begin = beginWord;
+            _bag.words[_bag.size].end = endWord;
+            _bag.size++;
+        }
+        beginWord = endWord;
+    }
+}
+
+void printWordsInReverseOrder(char *s) {
+    getBagOfWords(s);
+
+    for (int i = _bag.size - 1; i >= 0; --i) {
+        for (char *c = _bag.words[i].begin; c != _bag.words[i].end; ++c) {
+            putchar(*c);
+        }
+        putchar('\n');
+    }
+} //                 //ЗАДАЧА 7
+
+bool isPalindrome(const char *start, const char *end) {
+    while (start < end) {
+        if (*start != *end) {
+            return false;
+        }
+        start++;
+        end--;
+    }
+    return true;
+}
+
+int countPalindromes(const char *s) {
+    int count = 0;
+    const char *wordStart = s;
+    const char *wordEnd;
+
+    while (*s) {
+        if (*s == ',' || *s == '\0') {
+            wordEnd = s - 1;
+
+            while (wordEnd > wordStart && isspace(*wordEnd)) {
+                wordEnd--;
+            }
+
+            if (isPalindrome(wordStart, wordEnd)) {
+                count++;
+            }
+
+            s++;
+            while (*s && isspace(*s)) {
+                s++;
+            }
+            wordStart = s;
+        } else {
+            s++;
+        }
+    }
+
+    if (wordStart < s) {
+        wordEnd = s - 1;
+        if (isPalindrome(wordStart, wordEnd)) {
+            count++;
+        }
+    }
+
+    return count;
+}
