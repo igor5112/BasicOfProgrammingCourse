@@ -570,3 +570,32 @@ WordDescriptor findPrecedingWord(const char *s1, const char *s2) {
 
     return precedingWord;
 }
+
+void removePalindromes(char *str) {
+    char *result = str;
+    const char *begin = str;
+    const char *end;
+
+    while (*begin) {
+
+        while (*begin && isspace((unsigned char)*begin)) {
+            begin++;
+        }
+        end = begin;
+
+        while (*end && !isspace((unsigned char)*end)) {
+            end++;
+        }
+        if (begin < end && !isPalindrome(begin, end)) {
+
+            result = copy(begin, end, result);
+            *result++ = ' ';
+        }
+        begin = end;
+    }
+    if (result != str) {
+        *(result - 1) = '\0';
+    } else {
+        *result = '\0';
+    }
+}
