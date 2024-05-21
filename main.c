@@ -309,3 +309,95 @@ void mergeStrings(const char *s1, const char *s2, char *result) {
     }
     *result = '\0';
 }
+
+bool isSpace(char c) {
+    return c == ' ' || c == '\n' || c == '\t';
+}
+
+
+void reverseWordsInString(char *str) {
+    size_t length = strlen1(str);
+    char buffer[length + 1];
+    char *bufferEnd = copy(str, str + length, buffer);
+    *bufferEnd = '\0';
+
+    char *wordEnd = buffer + length;
+    char *dest = str;
+
+
+    while (wordEnd > buffer) {
+        if (isSpace(*(wordEnd - 1))) {
+            wordEnd--;
+        } else {
+            char *wordStart = wordEnd - 1;
+            while (wordStart > buffer && !isSpace(*(wordStart - 1))) {
+                wordStart--;
+            }
+            dest = copy(wordStart, wordEnd, dest);
+            *dest++ = ' ';
+            wordEnd = wordStart;
+        }
+    }
+    if (dest > str) {
+        *(dest - 1) = '\0';
+    } else {
+        *dest = '\0';
+    }
+}   //                                  ЗАДАЧА 10
+
+bool hasLetterA(const char *begin, const char *end) {
+    while (begin != end) {
+        if (*begin == 'a' || *begin == 'A') {
+            return true;
+        }
+        begin++;
+    }
+    return false;
+}
+
+// Функция для вывода слова перед первым словом с буквой 'a'
+void printWordBeforeFirstWordWithA(char *s) {
+    const char *begin = s;
+    const char *end;
+    const char *wordBefore = NULL;
+    size_t wordBeforeLength = 0;
+
+    while (*begin) {
+        // Пропускаем пробелы
+        while (*begin == ' ') {
+            begin++;
+        }
+        if (*begin == '\0') {
+            break;
+        }
+        end = begin;
+
+        // Находим конец слова
+        while (*end != ' ' && *end != '\0') {
+            end++;
+        }
+
+        // Проверяем, содержит ли слово букву 'a'
+        if (hasLetterA(begin, end)) {
+            // Если это первое слово с 'a', выводим предыдущее слово, если оно есть
+            if (wordBefore) {
+                for (const char *c = wordBefore; c != wordBefore + wordBeforeLength; c++) {
+                    putchar(*c);
+                }
+                putchar('\n');
+            } else {
+                printf("No word before the first word with 'a'.\n");
+            }
+            return;
+        }
+
+
+        wordBefore = begin;
+        wordBeforeLength = end - begin;
+
+
+        begin = end;
+    }
+
+    printf("No word with 'a' found.\n");
+}
