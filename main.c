@@ -132,3 +132,30 @@ void takeEveryNumberToCountOfSpaces(char *s) {
     }
     *dst;
 }
+
+void replace(char *source, char *w1, char *w2) {
+    size_t w1Size = strlen1(w1); // Предполагается, что функция strlen1 определена и работает как strlen
+    size_t w2Size = strlen1(w2);
+    WordDescriptor word1 = {w1, w1 + w1Size};
+    WordDescriptor word2 = {w2, w2 + w2Size};
+    char *readPtr, *recPtr;
+    char _stringBuffer[1024];
+
+    if (w1Size >= w2Size) {
+        readPtr = source;
+        recPtr = source;
+    } else {
+        recPtr = copy(source, getEndOfString(source), _stringBuffer);
+        readPtr = _stringBuffer;
+    }
+
+    while (*readPtr != '\0') {
+        if (isWordAt(readPtr, word1)) {
+            recPtr = copy(word2.begin, word2.end, recPtr);
+            readPtr += w1Size;
+        } else {
+            *recPtr++ = *readPtr++;
+        }
+    }
+    *recPtr = '\0';
+}
