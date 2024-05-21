@@ -517,4 +517,41 @@ bool hasAnagramPair(char *str) {
         }
     }
     return false;
+}
+
+void getStringOfWordsDifferentFromLast(char *str, char *result) {
+    WordDescriptor lastWord = {NULL, NULL};
+    const char *tempStr = str;
+    WordDescriptor tempWord;
+
+
+    while (getWord(&tempStr, &tempWord)) {
+        lastWord = tempWord;
+    }
+
+    if (lastWord.begin == NULL) {
+        // В строке нет слов
+        *result = '\0';
+        return;
+    }
+
+
+    tempStr = str;
+    *result = '\0';
+
+
+    while (getWord(&tempStr, &tempWord)) {
+        if (tempWord.begin == lastWord.begin) {
+            continue;
+        }
+        if (areWordsEqual(tempWord, lastWord) != 0) {
+            result = copy(tempWord.begin, tempWord.end, result);
+            *result++ = ' ';
+        }
+    }
+    if (result != str) {
+        *(result - 1) = '\0';
+    } else {
+        *result = '\0';
+    }
 } 
