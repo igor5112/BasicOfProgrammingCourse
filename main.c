@@ -482,3 +482,39 @@ bool hasSameWords(char *str) {
     }
     return false;
 }
+
+void sortLettersInWord(char *begin, char *end) {
+    for (char *i = begin; i < end; i++) {
+        for (char *j = i + 1; j < end; j++) {
+            if (*i > *j) {
+                char temp = *i;
+                *i = *j;
+                *j = temp;
+            }
+        }
+    }
+}
+
+
+bool hasAnagramPair(char *str) {
+    size_t length = strlen1(str);
+    char buffer[length + 1];
+    copy(str, str + length, buffer);
+    buffer[length] = '\0';
+
+    char *beginSearch = buffer;
+    WordDescriptor currentWord, compareWord;
+
+    while (getWord(&beginSearch, &currentWord)) {
+        sortLettersInWord(currentWord.begin, currentWord.end);
+
+        char *beginCompare = beginSearch;
+        while (getWord(&beginCompare, &compareWord)) {
+            sortLettersInWord(compareWord.begin, compareWord.end);
+            if (areWordsEqual(currentWord, compareWord) == 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+} 
