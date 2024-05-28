@@ -1,0 +1,524 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "libs/data_structures/string/string_.h"
+
+void transpose_and_write(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+    int n;
+    fscanf(file, "%d", &n);
+
+    int **matrix = (int **) malloc(n * sizeof(int *));
+    for (int i = 0; i < n; i++) {
+        matrix[i] = (int *) malloc(n * sizeof(int));
+    }
+
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            fscanf(file, "%d", &matrix[i][j]);
+        }
+    }
+
+    fclose(file);
+
+
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        perror("error");
+        for (int i = 0; i < n; i++) {
+            free(matrix[i]);
+        }
+        free(matrix);
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            fprintf(file, "%d ", matrix[j][i]);
+        }
+        fprintf(file, "\n");
+    }
+
+
+    for (int i = 0; i < n; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
+
+    fclose(file);
+}
+
+int compare_files(const char *file1, const char *file2) {
+    FILE *f1 = fopen(file1, "r");
+    FILE *f2 = fopen(file2, "r");
+    if (f1 == NULL || f2 == NULL) {
+        perror("error");
+        return -1;
+    }
+
+    int ch1, ch2;
+    do {
+        ch1 = fgetc(f1);
+        ch2 = fgetc(f2);
+        if (ch1 != ch2) {
+            fclose(f1);
+            fclose(f2);
+            return 0;
+        }
+    } while (ch1 != EOF && ch2 != EOF);
+
+    fclose(f1);
+    fclose(f2);
+    return 1;
+}
+
+void convert_numbers(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+
+    FILE *temp_file = fopen("temp.txt", "w");
+    if (temp_file == NULL) {
+        perror("error");
+        fclose(file);
+        return;
+    }
+
+    double number;
+    while (fscanf(file, "%lf", &number) == 1) {
+        fprintf(temp_file, "%.2f ", number);
+    }
+
+    fclose(file);
+    fclose(temp_file);
+
+    remove(filename);
+    rename("temp.txt", filename);
+}
+
+int evaluate_expression(const char *expression) {
+    int operand1, operand2;
+    char operator;
+    if (sscanf(expression, "%d %c %d", &operand1, &operator, &operand2) == 3) {
+        switch (operator) {
+            case '+': return operand1 + operand2;
+            case '-': return operand1 - operand2;
+            case '*': return operand1 * operand2;
+            case '/': return operand2 != 0 ? operand1 / operand2 : 0;
+            default: return 0;
+        }
+    }
+    return 0;
+}
+
+
+void process_expression_file(const char *filename) {
+    FILE *file = fopen(filename, "r+");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+    char expression[50];
+    if (fgets(expression, sizeof(expression), file) == NULL) {
+        perror("error");
+        fclose(file);
+        return;
+    }
+
+    int result = evaluate_expression(expression);
+
+
+    fseek(file, 0, SEEK_END);
+    fprintf(file, " = %d\n", result);
+
+    fclose(file);
+}
+
+bool contains_sequence(const char *word, const char *sequence) {
+    const char *pWord = word;
+    const char *pSequence = sequence;
+
+    while (*pWord != '\0') {
+        if (*pWord == *pSequence) {
+            const char *startMatch = pWord;
+
+            while (*pWord == *pSequence && *pSequence != '\0') {
+                pWord++;
+                pSequence++;
+            }
+
+            if (*pSequence == '\0') {
+                return true;
+            }
+
+            pSequence = sequence;
+        }
+        pWord++;
+    }
+
+    return false;
+}
+
+
+void filter_words_in_file(const char *filename, const char *sequence) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+    FILE *temp_file = fopen("temp.txt", "w");
+    if (temp_file == NULL) {
+        perror("error");
+        fclose(file);
+        return;
+    }
+
+    char word[100];
+    while (fscanf(file, "%s", word) == 1) {
+        if (contains_sequence(word, sequence)) {
+            fprintf(temp_file, "%s ", word);
+        }
+    }
+
+    fclose(file);
+    fclose(temp_file);
+
+
+    remove(filename);
+    rename("temp.txt", filename);
+}
+
+bool is_separator(char c) {
+    return c == ' ' || c == ',' || c == '.' || c == '-' || c == '\n' || c == '\0';
+}
+
+
+void find_longest_word(const char *str, char *longestWord) {
+    int maxLength = 0;
+    int currentLength = 0;
+    const char *currentStart = str;
+    const char *longestStart = str;
+
+    while (*str != '\0') {
+        if (is_separator(*str)) {
+            if (currentLength > maxLength) {
+                maxLength = currentLength;
+                longestStart = currentStart;
+            }
+            currentLength = 0;
+            currentStart = str + 1;
+        } else {
+            currentLength++;
+        }
+        str++;
+    }
+
+
+    if (currentLength > maxLength) {
+        maxLength = currentLength;
+        longestStart = currentStart;
+    }
+
+
+    for (int i = 0; i < maxLength; i++) {
+        longestWord[i] = *longestStart++;
+    }
+    longestWord[maxLength] = '\0';
+}
+
+
+void process_file(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    FILE *temp_file = fopen("temp.txt", "w");
+
+    if (file == NULL || temp_file == NULL) {
+        perror("error");
+        if (file) fclose(file);
+        if (temp_file) fclose(temp_file);
+        return;
+    }
+
+    char line[256];
+    char longestWord[100];
+    while (fgets(line, sizeof(line), file)) {
+        find_longest_word(line, longestWord);
+        fprintf(temp_file, "%s\n", longestWord);
+    }
+
+    fclose(file);
+    fclose(temp_file);
+
+    remove(filename);
+    rename("temp.txt", filename);
+}
+
+typedef struct {
+    int exponent;
+    float coefficient;
+} PolynomialTerm;
+
+
+bool is_root(PolynomialTerm *polynomial, int degree, float x) {
+    float sum = 0.0;
+    for (int i = 0; i <= degree; ++i) {
+        sum += polynomial[i].coefficient * pow(x, polynomial[i].exponent);
+    }
+    return sum == 0.0;
+}
+
+
+void remove_polynomials(const char *filename, float x) {
+    FILE *file = fopen(filename, "rb");
+    FILE *temp_file = fopen("temp.bin", "wb");
+
+    if (file == NULL || temp_file == NULL) {
+        perror("error");
+        if (file) fclose(file);
+        if (temp_file) fclose(temp_file);
+        return;
+    }
+
+    PolynomialTerm polynomial[100];
+    int degree;
+    while (fread(&degree, sizeof(int), 1, file) == 1) {
+        fread(polynomial, sizeof(PolynomialTerm), degree + 1, file);
+        if (!is_root(polynomial, degree, x)) {
+            fwrite(&degree, sizeof(int), 1, temp_file);
+            fwrite(polynomial, sizeof(PolynomialTerm), degree + 1, temp_file);
+        }
+    }
+
+    fclose(file);
+    fclose(temp_file);
+
+    remove(filename);
+    rename("temp.bin", filename);
+}
+
+void reorder_numbers(const char *filename) {
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+    int number;
+    int *positiveNumbers = malloc(sizeof(int) * 1000);
+    int *negativeNumbers = malloc(sizeof(int) * 1000);
+    int posCount = 0, negCount = 0;
+
+    while (fread(&number, sizeof(int), 1, file) == 1) {
+        if (number > 0) {
+            positiveNumbers[posCount++] = number;
+        } else {
+            negativeNumbers[negCount++] = number;
+        }
+    }
+    fclose(file);
+
+
+    file = fopen(filename, "wb");
+    if (file == NULL) {
+        perror("error");
+        free(positiveNumbers);
+        free(negativeNumbers);
+        return;
+    }
+
+    fwrite(positiveNumbers, sizeof(int), posCount, file);
+    fwrite(negativeNumbers, sizeof(int), negCount, file);
+
+    fclose(file);
+    free(positiveNumbers);
+    free(negativeNumbers);
+}
+
+void transpose_matrix(int **matrix, int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            int temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+        }
+    }
+}
+
+
+bool is_symmetric(int **matrix, int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < i; ++j) {
+            if (matrix[i][j] != matrix[j][i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void process_matrices_file(const char *filename, int n) {
+    FILE *file = fopen(filename, "rb+");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+    int **matrix = malloc(n * sizeof(int *));
+    for (int i = 0; i < n; ++i) {
+        matrix[i] = malloc(n * sizeof(int));
+    }
+
+
+    while (fread(matrix[0], sizeof(int), n * n, file) == n * n) {
+        if (!is_symmetric(matrix, n)) {
+            transpose_matrix(matrix, n);
+            fseek(file, -n * n * sizeof(int), SEEK_CUR);
+            fwrite(matrix[0], sizeof(int), n * n, file);
+        }
+    }
+
+
+    for (int i = 0; i < n; ++i) {
+        free(matrix[i]);
+    }
+    free(matrix);
+    fclose(file);
+}
+int n = 4;
+
+typedef struct {
+    char name[100];
+    double best_result;
+} Athlete;
+
+
+int compare_athletes(const void *a, const void *b) {
+    double resultA = ((Athlete *)a)->best_result;
+    double resultB = ((Athlete *)b)->best_result;
+    return (resultA < resultB) - (resultA > resultB);
+}
+
+
+void form_team_and_save(const char *filename, int team_size) {
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        perror("error");
+        return;
+    }
+
+
+    fseek(file, 0, SEEK_END);
+    long filesize = ftell(file);
+    int num_athletes = filesize / sizeof(Athlete);
+    rewind(file);
+
+
+    Athlete *athletes = malloc(filesize);
+    fread(athletes, sizeof(Athlete), num_athletes, file);
+    fclose(file);
+
+
+    qsort(athletes, num_athletes, sizeof(Athlete), compare_athletes);
+
+
+    file = fopen(filename, "wb");
+    fwrite(athletes, sizeof(Athlete), team_size, file);
+    fclose(file);
+
+    free(athletes);
+}
+
+typedef struct {
+    char name[50];
+    float price;
+    float total_cost;
+    int quantity;
+} StockItem;
+
+
+typedef struct {
+    char name[50];
+    int quantity;
+} OrderItem;
+
+
+void update_stock(const char *stock_filename, const char *orders_filename) {
+
+    FILE *stock_file = fopen(stock_filename, "rb+");
+    FILE *orders_file = fopen(orders_filename, "rb");
+    if (!stock_file || !orders_file) {
+        perror("error");
+        exit(1);
+    }
+
+
+    OrderItem order;
+    while (fread(&order, sizeof(OrderItem), 1, orders_file)) {
+        StockItem stock;
+        long int stock_pos = 0;
+        while (fread(&stock, sizeof(StockItem), 1, stock_file)) {
+            if (strcmp(order.name, stock.name) == 0) {
+                if (stock.quantity >= order.quantity) {
+                    stock.quantity -= order.quantity;
+                    stock.total_cost = stock.quantity * stock.price;
+                    fseek(stock_file, stock_pos, SEEK_SET);
+                    fwrite(&stock, sizeof(StockItem), 1, stock_file);
+                    if (stock.quantity == 0) {
+
+                    }
+                }
+                break;
+            }
+            stock_pos = ftell(stock_file);
+        }
+        rewind(stock_file);
+    }
+
+
+    fclose(stock_file);
+    fclose(orders_file);
+}
+
+void create_test_stock_file(const char *filename) {
+    FILE *file = fopen(filename, "wb");
+    StockItem items[] = {
+            {"Товар1", 100.0, 1000.0, 10},
+            {"Товар2", 200.0, 4000.0, 20},
+            // Другие тестовые товары...
+    };
+    fwrite(items, sizeof(items), 1, file);
+    fclose(file);
+}
+
+
+void create_test_orders_file(const char *filename) {
+    FILE *file = fopen(filename, "wb");
+    OrderItem orders[] = {
+            {"Товар1", 5},
+            {"Товар2", 15},
+
+    };
+    fwrite(orders, sizeof(orders), 1, file);
+    fclose(file);
+}
+
+
+void check_updated_stock_file(const char *filename) {
+    FILE *file = fopen(filename, "rb");
+    StockItem item;
+    while (fread(&item, sizeof(StockItem), 1, file)) {
+        printf("%s  %.2f  %.2f  %d\n",
+               item.name, item.price, item.total_cost, item.quantity);
+    }
+    fclose(file);
+}
